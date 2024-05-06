@@ -1,9 +1,6 @@
-// import { useContext } from "react";
-// import { GameModContext } from "./gameModContext";
+import { useContext } from "react";
+import { ModContext } from "./gameModContext";
 
-
-// export function useModContext() {
-
-//   return useContext(GameModContext);
-
-// }
+export function useModContext() {
+  return useContext(ModContext);
+}

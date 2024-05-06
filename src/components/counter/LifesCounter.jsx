@@ -8,7 +8,7 @@
 //       const resetTryes = () =>{
 //         setLifes(3)
 //       }
-     
+
 //   return (
 //     <div>
 //         <div>
