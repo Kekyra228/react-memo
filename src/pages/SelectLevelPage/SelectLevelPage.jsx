@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
+import { GameModContext } from "../../components/context/gameModContext";
+
 
 export function SelectLevelPage() {
+
+  const {openEasyMod} = GameModContext()
+
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
@@ -23,6 +28,12 @@ export function SelectLevelPage() {
             </Link>
           </li>
         </ul>
+          <div>
+            <h3>Легкий режим</h3>
+            <input type="radio" 
+            onClick={openEasyMod}
+            />
+        </div>
       </div>
     </div>
   );

@@ -57,6 +57,14 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     minutes: 0,
   });
 
+  const [lifes, setLifes] = useState(3)
+  const userTry = () => {
+      setLifes(lifes => lifes - 1);
+    };
+    const resetTryes = () =>{
+      setLifes(3)
+    }
+
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(status);
@@ -67,12 +75,14 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setGameStartDate(startDate);
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
+    setLifes(3)
   }
   function resetGame() {
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
+    resetTryes()
   }
 
   /**
@@ -97,6 +107,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         ...card,
         open: true,
       };
+      
     });
 
     setCards(nextCards);
@@ -119,11 +130,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       if (sameCards.length < 2) {
         return true;
       }
-
+      
+    
       return false;
     });
 
-    const playerLost = openCardsWithoutPair.length >= 2;
+    const playerLost = openCardsWithoutPair.length >= 6;
+
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
@@ -176,6 +189,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.timer}>
+   
           {status === STATUS_PREVIEW ? (
             <div>
               <p className={styles.previewText}>Запоминайте пары!</p>
@@ -195,6 +209,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
+     
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
 
@@ -209,6 +224,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           />
         ))}
       </div>
+
+            <div>
+                <div>
+                  <p>Жизней: {lifes}</p>
+                </div>
+                <div>Счетчик</div>
+            </div>
 
       {isGameEnded ? (
         <div className={styles.modalContainer}>
