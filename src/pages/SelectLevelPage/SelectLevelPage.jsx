@@ -1,11 +1,23 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
-import { GameModContext } from "../../components/context/gameModContext";
+import { ModContext } from "../../components/context/gameModContext";
+import { useState } from "react";
+import { Button } from "../../components/Button/Button";
+import { set } from "lodash";
 
 
 export function SelectLevelPage() {
 
-  const {openEasyMod} = GameModContext()
+  const { chooseEasyMod } = ModContext();
+
+  const nav = useNavigate();
+
+  const [level, setLevel] = useState(null);
+
+
+  const startGame = () => {
+    nav(`/game/${level}`);
+  };
 
   return (
     <div className={styles.container}>
@@ -13,6 +25,26 @@ export function SelectLevelPage() {
         <h1 className={styles.title}>Выбери сложность</h1>
         <ul className={styles.levels}>
           <li className={styles.level}>
+            <label className={styles.levelLink}>
+              1
+              <input type="checkbox" value="3" isChecked={level} onChange={(e)=>setLevel(e.target.value)} />
+            </label>
+          </li>
+
+          <li className={styles.level}>
+            <label className={styles.levelLink}>
+              2
+              <input type="checkbox" value="6"  isChecked={level} onChange={(e)=>setLevel(e.target.value) } />
+            </label>
+          </li>
+
+          <li className={styles.level}>
+            <label className={styles.levelLink}>
+              3
+              <input type="checkbox" value="9" isChecked={level} onChange={(e)=>setLevel(e.target.value)} />
+            </label>
+          </li>
+          {/* <li className={styles.level}>
             <Link className={styles.levelLink} to="/game/3">
               1
             </Link>
@@ -26,14 +58,11 @@ export function SelectLevelPage() {
             <Link className={styles.levelLink} to="/game/9">
               3
             </Link>
-          </li>
+          </li> */}
         </ul>
-          <div>
-            <h3>Легкий режим</h3>
-            <input type="radio" 
-            onClick={openEasyMod}
-            />
-        </div>
+        <label className={styles.chooseEasyMod}> Легкий режим: <input type="checkbox" name="myCheckbox" onChange={(e)=>chooseEasyMod()}/>
+        </label>
+        <Button onClick={startGame}>Играть</Button>
       </div>
     </div>
   );

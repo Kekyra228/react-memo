@@ -1,17 +1,16 @@
-import React, { useState } from "react"
+import React, { createContext, useState } from "react";
 
-export const GameModContext = React.createContext(null);
+export const ModContext = createContext(null);
 
-export function EasyModSelecting({children}) {
-   
-    const [isEasyMod, setEasyMod] = useState(false)
+export const ModProvider = ({ children }) => {
 
-    function openEasyMod() {
-      setEasyMod((isEasyMod)=>!isEasyMod)
-    }
+  const [isEasyMod, setIsEasyMod] = useState(false);
 
- return <GameModContext.Provider value={{isEasyMod, openEasyMod}}>
-            {children}
-        </GameModContext.Provider>
-        
+const chooseEasyMod =()=>{
+  setIsEasyMod((isEasyMod)=>!isEasyMod)
 }
+
+  return <ModContext.Provider value={{ isEasyMod, chooseEasyMod }}>
+        {children}
+    </ModContext.Provider>;
+};

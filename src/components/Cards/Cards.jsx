@@ -57,7 +57,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     minutes: 0,
   });
 
-  const [lifes, setLifes] = useState(3)
+  const [lifes, setLifes] = useState(isEasyMod ? 3 : 1)
   const userTry = () => {
       setLifes(lifes => lifes - 1);
     };
@@ -102,7 +102,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       if (card.id !== clickedCard.id) {
         return card;
       }
-
       return {
         ...card,
         open: true,
@@ -130,20 +129,36 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       if (sameCards.length < 2) {
         return true;
       }
-      
-    
+
       return false;
     });
 
-    const playerLost = openCardsWithoutPair.length >= 6;
+  
 
+    if(isEasyMod) {
+        userTry()
+        const nextWrongCards = openCardsWithoutPair.map(card => {
+          if (card.id !== clickedCard.id) {
+            return card;
+          }
+          return {
+            ...card,
+            open: false,
+          };
+          
+        });
 
-    // "Игрок проиграл", т.к на поле есть две открытые карты без пары
-    if (playerLost) {
-      finishGame(STATUS_LOST);
-      return;
-    }
+     } 
+     else {
+// "Игрок проиграл", т.к на поле есть две открытые карты без пары
+      const playerLost = openCardsWithoutPair.length >= 2;
+      if (playerLost) {
+        finishGame(STATUS_LOST);
+        return;
+      }
+     }
 
+  
     // ... игра продолжается
   };
 
