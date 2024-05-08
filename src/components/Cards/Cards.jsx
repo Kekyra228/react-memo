@@ -60,12 +60,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   });
 
   const [lifes, setLifes] = useState(isEasyMod ? 3 : 1);
-  const userTry = () => {
-    setLifes(lifes => lifes - 1);
-  };
-  const resetTryes = () => {
-    setLifes(3);
-  };
+  // const userTry = () => {
+  //   setLifes(lifes => lifes - 1);
+  // };
 
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
@@ -77,14 +74,12 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setGameStartDate(startDate);
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
-    setLifes(3);
   }
   function resetGame() {
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
-    resetTryes();
   }
 
   /**
@@ -136,21 +131,19 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     if (isEasyMod) {
       if (openCardsWithoutPair.length >= 2) {
-        userTry();
-        const wrongCards = cards.map(card => {
-          if (openCardsWithoutPair.find(c => openCard => c.suit === openCard.suit && c.rank === openCard.rank)) {
-            return {
-              ...card,
-              open: false,
-            };
+        openCardsWithoutPair.forEach(wrongCard => {
+          const foundWrongCard = nextCards.find(card => card.id === wrongCard.id);
+          if (foundWrongCard) {
+            foundWrongCard.open = false;
           }
-          return card;
         });
-        setCards(wrongCards);
-        if (lifes === 0) {
-          finishGame(STATUS_LOST);
-          return;
-        }
+
+        setLifes(lifes => lifes - 1);
+        setCards([...nextCards]);
+      }
+      if (lifes === 0) {
+        finishGame(STATUS_LOST);
+        return;
       }
     } else {
       // "Игрок проиграл", т.к на поле есть две открытые карты без пары
@@ -243,9 +236,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
       <div>
         <div>
-          <p>Жизней: {lifes}</p>
+          <p className={styles.lifesCont}>Жизней: {lifes}</p>
         </div>
-        <div>Счетчик</div>
       </div>
 
       {isGameEnded ? (
