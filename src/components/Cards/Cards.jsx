@@ -6,6 +6,7 @@ import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
 import { useModContext } from "../context/useModContext";
+import { LeaderboardModal } from "../../leaderbord/LeaderbordModal";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -14,6 +15,8 @@ const STATUS_WON = "STATUS_WON";
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 // Начало игры: игрок видит все карты в течении нескольких секунд
 const STATUS_PREVIEW = "STATUS_PREVIEW";
+
+const STATUS_LEADER = "STATUS_LEADER";
 
 function getTimerValue(startDate, endDate) {
   if (!startDate && !endDate) {
@@ -110,7 +113,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     const isPlayerWon = nextCards.every(card => card.open);
 
     // Победа - все карты на поле открыты
-    if (isPlayerWon) {
+
+    if (isPlayerWon && !isEasyMod && pairsCount === 9) {
+      finishGame(STATUS_LEADER);
+    } else if (isPlayerWon) {
       finishGame(STATUS_WON);
       return;
     }
@@ -158,6 +164,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   };
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
+  const isGameEndedLeader = status === STATUS_LEADER;
 
   // Игровой цикл
   useEffect(() => {
@@ -244,6 +251,16 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         <div className={styles.modalContainer}>
           <EndGameModal
             isWon={status === STATUS_WON}
+            gameDurationSeconds={timer.seconds}
+            gameDurationMinutes={timer.minutes}
+            onClick={resetGame}
+          />
+        </div>
+      ) : null}
+      {isGameEndedLeader ? (
+        <div className={styles.modalContainer}>
+          <LeaderboardModal
+            isLeader={status === STATUS_LEADER}
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}

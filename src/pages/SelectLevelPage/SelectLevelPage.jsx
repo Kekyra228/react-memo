@@ -6,14 +6,6 @@ import { useModContext } from "../../components/context/useModContext";
 export function SelectLevelPage() {
   const { isEasyMod, chooseEasyMod } = useModContext();
 
-  // const nav = useNavigate();
-
-  // const [level, setLevel] = useState(null);
-
-  // const startGame = () => {
-  //   nav(`/game/${level}`);
-  // };
-
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
@@ -60,6 +52,9 @@ export function SelectLevelPage() {
           Легкий режим: <input type="checkbox" name="myCheckbox" checked={isEasyMod} onChange={e => chooseEasyMod()} />
         </label>
         <Button>Играть</Button>
+        <Link to="/leaderboard">
+          <p className={styles.linkToLeaderboard}>Перейти к лидерборду</p>
+        </Link>
       </div>
     </div>
   );
