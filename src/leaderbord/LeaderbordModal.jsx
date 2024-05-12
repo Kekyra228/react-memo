@@ -10,8 +10,12 @@ export function LeaderboardModal({ isLeader, gameDurationSeconds, gameDurationMi
   //   const title = isLeader ? "Вы попали на Лидерборд!" : "";
 
   const [name, setName] = useState("");
-  const gameTime = gameDurationMinutes * 60 + gameDurationSeconds;
-
+  // const gameTime = gameDurationMinutes * 60 + gameDurationSeconds;
+  const gameTime = gameTime => {
+    const gameDurationMinutes = Math.floor(gameTime / 60);
+    const gameDurationSeconds = gameTime % 60;
+    return `${gameDurationMinutes}:${gameDurationSeconds.toString().padStart("2", "0")}`;
+  };
   const [message, setMessage] = useState(false);
 
   const postScore = async event => {

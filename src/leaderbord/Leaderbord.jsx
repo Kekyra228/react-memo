@@ -1,21 +1,26 @@
 import styles from "./Leaderbord.module.css";
-import { Button } from "../components/Button/Button";
 import { getLeaderbord } from "../api";
 import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export function Leaderbord({ onClick }) {
-  // function startGame() {
-  //   const nav = useNavigate();
-  //   nav(/);
-  // }
+export function Leaderbord({ gameTime }) {
   const [leaderList, setLeaderList] = useState([]);
+  // const formatDate = secFormat => {
+  //   const min = Math.floor(secFormat / 60);
+  //   const sec = secFormat % 60;
+  //   return `${min}:${sec.toString().padStart("2", "0")}`;
+  // };
+
+  const formatDate = time => {
+    let minutes = Math.floor(time / 60);
+    let seconds = Math.round(time % 60);
+    return `${minutes}:${seconds.toString().padStart("2", "0")}`;
+  };
+
   useEffect(() => {
     getLeaderbord().then(data => {
-      setLeaderList(data.leaders);
-      data.sort((a, b) => {
-        return a.time - b.time;
-      });
+      const leaderList = data.leaders.sort((a, b) => a.time - b.time);
+      setLeaderList(leaderList);
     });
   }, []);
   return (
@@ -23,7 +28,9 @@ export function Leaderbord({ onClick }) {
       <div className={styles.mainBlock}>
         <div className={styles.topContainer}>
           <h1 className={styles.title}>Лидерборд</h1>
-          <Button>Начать игру</Button>
+          <Link className={styles.startGameBtn} to="/">
+            Начать игру
+          </Link>
         </div>
 
         <div className={styles.listContainer}>
@@ -35,13 +42,13 @@ export function Leaderbord({ onClick }) {
                 <p className={styles.infoAboutLeaderTop}>Время</p>
               </div>
             </li>
-            {leaderList.map(value => {
+            {leaderList.slice(0, 10).map((value, index) => {
               return (
                 <li key={value.id} className={styles.leaderItem}>
                   <div className={styles.infoLeaderContainer}>
-                    <p className={styles.infoAboutLeader}> #{value.id}</p>
+                    <p className={styles.infoAboutLeader}> #{index + 1}</p>
                     <p className={styles.infoAboutLeader}>{value.name}</p>
-                    <p className={styles.infoAboutLeader}>{value.time}</p>
+                    <p className={styles.infoAboutLeader}>{formatDate(value.time)}</p>
                   </div>
                 </li>
               );
