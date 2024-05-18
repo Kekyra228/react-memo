@@ -28,14 +28,13 @@
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: end;
+  align-items: center;
   margin-bottom: 35px;
 }
 
 .timer {
   display: flex;
   align-items: end;
-
   color: #fff;
   font-family: StratosSkyeng;
   font-size: 64px;
@@ -81,11 +80,48 @@
   line-height: 32px;
   margin-bottom: -12px;
   &::after {
-    content: "❤️"
+    content: "❤️";
   }
 }
 
-.achievementEye{
-margin-right: 15px;
+.achievementEye {
+  margin-right: 15px;
+}
 
+.achievementCont {
+  margin-left: 30px;
+  display: flex;
+}
+
+.achievementHelpAlahomora:hover::after {
+  content: attr(data-title);
+  z-index: 1;
+  position: absolute;
+  background-color: rgb(194, 245, 255);
+  color: rgb(0, 73, 128);
+  font-size: 18px;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.achievementHelpEye:hover::after {
+  content: attr(data-title);
+  z-index: 1;
+  position: absolute;
+  background-color: rgb(194, 245, 255);
+  color: rgb(0, 73, 128);
+  font-size: 18px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  width: auto;
+  height: auto;
+}
+.click {
+  border-radius: 50%;
+  background-color: rgb(194, 245, 255);
+  border: none;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
 }

@@ -19,14 +19,14 @@ export function LeaderboardModal({ isLeader, gameDurationSeconds, gameDurationMi
 
   const postScore = async event => {
     event.preventDefault();
-    const achievements = [];
+    const userAchievements = [];
     if (!isEasyMod) {
-      achievements.push(1);
+      userAchievements.push(1);
     }
     if (!alahomoraMod) {
-      achievements.push(2);
+      userAchievements.push(2);
     }
-    const data = { name: name, time: gameDurationMinutes * 60 + gameDurationSeconds, achievements };
+    const data = { name: name, time: gameDurationMinutes * 60 + gameDurationSeconds, achievements: userAchievements };
     await postLeaderbord(data).then(data.leaders);
     console.log("отправка");
     setMessage(true);

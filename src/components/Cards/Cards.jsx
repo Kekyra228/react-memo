@@ -8,8 +8,8 @@ import { Card } from "../../components/Card/Card";
 import { useModContext } from "../context/useModContext";
 import { LeaderboardModal } from "../../leaderbord/LeaderbordModal";
 // import eye from "../images/epiphane.svg";
-import eye from "../../components/EndGameModal/images/epiphany.svg";
-import alohomora from "../../components/EndGameModal/images/alohomora.svg";
+import eye from "../achievements/eye.svg";
+import alohomora from "../achievements/alohomora.svg";
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
 const STATUS_WON = "STATUS_WON";
@@ -47,7 +47,7 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
-  // const { alahomoraMod } = useModContext();
+  const { alahomoraMod, setAlahomoraMod } = useModContext();
   const { isEasyMod } = useModContext();
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
@@ -113,22 +113,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     setCards(nextCards);
 
-    // if (alahomoraMod) {
-    //   alert("aaaa");
-    //   const notOpenCards = cards.filter(card => !card.open);
-    //   const rangomOpenCards = cards.map(card => {
-    //     if (card.id === clickedCard.id.open) {
-    //       return card;
-    //     }
-    //     return {
-    //       ...card,
-    //       open: true,
-    //     };
-    //   });
-
-    //   setCards(rangomOpenCards);
-    // }
-
     const isPlayerWon = nextCards.every(card => card.open);
 
     // Победа - все карты на поле открыты
@@ -181,6 +165,22 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     // ... игра продолжается
   };
+  const useAlahomora = () => {
+    if (!alahomoraMod) {
+      console.log("алахомора сработала");
+      const notOpenCards = cards.filter(card => !card.open);
+      console.log(notOpenCards);
+      const randomCard = notOpenCards[Math.floor(Math.random() * notOpenCards.length)];
+      console.log(randomCard);
+      const randomPair = notOpenCards.filter(
+        notOpenCards => randomCard.suit === notOpenCards.suit && randomCard.rank === notOpenCards.rank,
+      );
+      console.log(randomPair);
+      randomPair[0].open = true;
+      randomPair[1].open = true;
+      setAlahomoraMod(true);
+    }
+  };
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
   const isGameEndedLeader = status === STATUS_LEADER;
@@ -232,23 +232,34 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </div>
           ) : (
             <>
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>min</div>
-                <div>{timer.minutes.toString().padStart("2", "0")}</div>
+              <div className={styles.timer}>
+                <div className={styles.timerValue}>
+                  <div className={styles.timerDescription}>min</div>
+                  <div>{timer.minutes.toString().padStart("2", "0")}</div>
+                </div>
+                .
+                <div className={styles.timerValue}>
+                  <div className={styles.timerDescription}>sec</div>
+                  <div>{timer.seconds.toString().padStart("2", "0")}</div>
+                </div>
               </div>
-              .
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>sec</div>
-                <div>{timer.seconds.toString().padStart("2", "0")}</div>
-              </div>
-              <div>
-                <img className={styles.achievementEye} src={eye} alt="eye" />
-                <img
-                  className={styles.achievementAlahamora}
-                  src={alohomora}
-                  alt="alahamora"
-                  // onClick={() => setAlahomoraMod}
-                />
+              <div className={styles.achievementCont}>
+                <div
+                  className={styles.achievementHelpEye}
+                  data-title="На 5 секунд показываются все карты.
+                  Таймер длительности игры на это время останавливается"
+                >
+                  <img className={styles.achievementEye} src={eye} alt="eye" />
+                </div>
+                <div className={styles.achievementHelpAlahomora} data-title="Открывается случайная пара карт">
+                  <button className={styles.click} onClick={useAlahomora}>
+                    {!alahomoraMod ? (
+                      <img className={styles.achievementAlahamora} src={alohomora} alt="alahamora" />
+                    ) : (
+                      ""
+                    )}
+                  </button>
+                </div>
               </div>
             </>
           )}

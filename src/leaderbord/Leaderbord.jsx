@@ -2,18 +2,23 @@ import styles from "./Leaderbord.module.css";
 import { getLeaderbord } from "../api";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import withoutEaseMod from "./images/withoutEaseMod.svg";
+import withoutEasyMod from "./images/withoutEasyMod.svg";
+import { useModContext } from "../components/context/useModContext";
 import withoutSuperpower from "./images/withoutSuperpower.svg";
-export function Leaderbord({ achievements }) {
+import alahomoraUsed from "./images/alahomoraUsed.svg";
+import easyModUsed from "./images/easyModUsed.svg";
+export function Leaderbord() {
+  const { isEasyMod } = useModContext();
+  const { alahomoraMod } = useModContext();
   const [leaderList, setLeaderList] = useState([]);
   // const formatDate = secFormat => {
   //   const min = Math.floor(secFormat / 60);
   //   const sec = secFormat % 60;
   //   return `${min}:${sec.toString().padStart("2", "0")}`;
   // };
-  const imgSrc = achievements === 1 ? (achievements === 2 ? withoutEaseMod : withoutSuperpower) : "";
+  // const imgSrc = achievements === 1 ? (achievements === 2 ? withoutEaseMod : withoutSuperpower) : "";
 
-  const imgAlt = achievements === 1 ? "withoutEaseMod" : "";
+  // const imgAlt = achievements === 1 ? "withoutEaseMod" : "";
 
   const formatDate = time => {
     let minutes = Math.floor(time / 60);
@@ -53,7 +58,16 @@ export function Leaderbord({ achievements }) {
                     <p className={styles.infoAboutLeader}> #{index + 1}</p>
                     <p className={styles.infoAboutLeader}>{value.name}</p>
                     <div>
-                      <img className={styles.image} src={imgSrc} alt={imgAlt} />
+                      {!isEasyMod ? (
+                        <img className={styles.image} src={withoutEasyMod} alt={"withoutEasyMod"} />
+                      ) : (
+                        <img className={styles.image} src={easyModUsed} alt={"easyModUsed"} />
+                      )}
+                      {!alahomoraMod ? (
+                        <img className={styles.image} src={withoutSuperpower} alt={"withoutSuperpower"} />
+                      ) : (
+                        <img className={styles.image} src={alahomoraUsed} alt={"alahomoraUsed"} />
+                      )}
                     </div>
                     <p className={styles.infoAboutLeader}>{formatDate(value.time)}</p>
                   </div>
