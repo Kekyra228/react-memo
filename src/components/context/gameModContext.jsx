@@ -9,5 +9,14 @@ export const ModProvider = ({ children }) => {
     setIsEasyMod(isEasyMod => !isEasyMod);
   };
 
-  return <ModContext.Provider value={{ isEasyMod, chooseEasyMod }}>{children}</ModContext.Provider>;
+  const [alahomoraMod, setAlahomoraMod] = useState(false);
+  const clickAlahomora = () => {
+    setAlahomoraMod(alahomoraMod => !alahomoraMod);
+  };
+
+  return (
+    <ModContext.Provider value={{ isEasyMod, chooseEasyMod, alahomoraMod, clickAlahomora }}>
+      {children}
+    </ModContext.Provider>
+  );
 };

@@ -1,27 +1,33 @@
 import { useState } from "react";
-import { Button } from "../components/Button/Button";
 import styles from "./LeaderboardModal.module.css";
-
 import celebrationImageUrl from "./images/celebration.png";
 import { Link } from "react-router-dom";
 import { postLeaderbord } from "../api";
+import { useModContext } from "../components/context/useModContext";
 
 export function LeaderboardModal({ isLeader, gameDurationSeconds, gameDurationMinutes, onClick }) {
-  //   const title = isLeader ? "Вы попали на Лидерборд!" : "";
-
+  const { isEasyMod } = useModContext();
+  const { alahomoraMod } = useModContext();
   const [name, setName] = useState("");
   // const gameTime = gameDurationMinutes * 60 + gameDurationSeconds;
-  const gameTime = gameTime => {
-    const gameDurationMinutes = Math.floor(gameTime / 60);
-    const gameDurationSeconds = gameTime % 60;
-    return `${gameDurationMinutes}:${gameDurationSeconds.toString().padStart("2", "0")}`;
-  };
+  // const gameTime = time => {
+  //   const gameDurationMinutes = Math.floor(time / 60);
+  //   const gameDurationSeconds = time % 60;
+  //   return `${gameDurationMinutes}:${gameDurationSeconds.toString().padStart("2", "0")}`;
+  // };
   const [message, setMessage] = useState(false);
 
   const postScore = async event => {
     event.preventDefault();
-    const data = { name: name, time: gameTime };
-    postLeaderbord(data);
+    const achievements = [];
+    if (!isEasyMod) {
+      achievements.push(1);
+    }
+    if (!alahomoraMod) {
+      achievements.push(2);
+    }
+    const data = { name: name, time: gameDurationMinutes * 60 + gameDurationSeconds, achievements };
+    await postLeaderbord(data).then(data.leaders);
     console.log("отправка");
     setMessage(true);
   };
@@ -47,7 +53,9 @@ export function LeaderboardModal({ isLeader, gameDurationSeconds, gameDurationMi
         <div className={styles.time}>
           {gameDurationMinutes.toString().padStart("2", "0")}.{gameDurationSeconds.toString().padStart("2", "0")}
         </div>
-        <Button onClick={postScore}>Отправить результат</Button>
+        <button className={styles.sendBtn} onClick={postScore}>
+          Отправить результат
+        </button>
         {message && <p className={styles.leaderMessage}> Результат отправлен!</p>}
         <Link to="/">
           <p className={styles.linkToLeaderboard}>Играть снова</p>

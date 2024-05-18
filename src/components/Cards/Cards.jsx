@@ -7,7 +7,9 @@ import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
 import { useModContext } from "../context/useModContext";
 import { LeaderboardModal } from "../../leaderbord/LeaderbordModal";
-
+// import eye from "../images/epiphane.svg";
+import eye from "../../components/EndGameModal/images/epiphany.svg";
+import alohomora from "../../components/EndGameModal/images/alohomora.svg";
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
 const STATUS_WON = "STATUS_WON";
@@ -45,6 +47,7 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  // const { alahomoraMod } = useModContext();
   const { isEasyMod } = useModContext();
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
@@ -109,6 +112,22 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     });
 
     setCards(nextCards);
+
+    // if (alahomoraMod) {
+    //   alert("aaaa");
+    //   const notOpenCards = cards.filter(card => !card.open);
+    //   const rangomOpenCards = cards.map(card => {
+    //     if (card.id === clickedCard.id.open) {
+    //       return card;
+    //     }
+    //     return {
+    //       ...card,
+    //       open: true,
+    //     };
+    //   });
+
+    //   setCards(rangomOpenCards);
+    // }
 
     const isPlayerWon = nextCards.every(card => card.open);
 
@@ -221,6 +240,15 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
               <div className={styles.timerValue}>
                 <div className={styles.timerDescription}>sec</div>
                 <div>{timer.seconds.toString().padStart("2", "0")}</div>
+              </div>
+              <div>
+                <img className={styles.achievementEye} src={eye} alt="eye" />
+                <img
+                  className={styles.achievementAlahamora}
+                  src={alohomora}
+                  alt="alahamora"
+                  // onClick={() => setAlahomoraMod}
+                />
               </div>
             </>
           )}
