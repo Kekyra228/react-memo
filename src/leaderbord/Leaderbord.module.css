@@ -21,7 +21,7 @@
 }
 
 .title {
-  color: #FFFFFF;;
+  color: #ffffff;
   text-align: center;
   font-variant-numeric: lining-nums proportional-nums;
   font-family: StratosSkyeng;
@@ -45,11 +45,9 @@
   padding-top: 9px;
 }
 
-
-
 .listContainer {
-display: flex;
-align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .leaderItem {
@@ -63,9 +61,8 @@ align-items: center;
   margin-bottom: 15px;
   border-radius: 12px;
   list-style: none;
- 
 }
-.infoLeaderContainer{
+.infoLeaderContainer {
   display: flex;
   justify-content: space-between;
   padding: 20px;
@@ -87,3 +84,12 @@ align-items: center;
   margin-bottom: 10px;
 }
 
+.achievementsContain {
+  display: flex;
+  width: 360px;
+  justify-content: space-between;
+}
+.achievements {
+  display: flex;
+  gap: 20px;
+}

@@ -10,6 +10,7 @@ import { LeaderboardModal } from "../../leaderbord/LeaderbordModal";
 // import eye from "../images/epiphane.svg";
 import eye from "../achievements/eye.svg";
 import alohomora from "../achievements/alohomora.svg";
+import usedAlahomora from "../achievements/usedAlahomora.svg";
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
 const STATUS_WON = "STATUS_WON";
@@ -86,6 +87,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
+    setAlahomoraMod(false);
   }
 
   /**
@@ -256,7 +258,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
                     {!alahomoraMod ? (
                       <img className={styles.achievementAlahamora} src={alohomora} alt="alahamora" />
                     ) : (
-                      ""
+                      <img className={styles.achievementAlahamora} src={usedAlahomora} alt="usedAlahomora" />
                     )}
                   </button>
                 </div>
