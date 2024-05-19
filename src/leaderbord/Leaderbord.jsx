@@ -3,18 +3,12 @@ import { getLeaderbord } from "../api";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import withoutEasyMod from "./images/withoutEasyMod.svg";
-// import { useModContext } from "../components/context/useModContext";
+
 import withoutSuperpower from "./images/withoutSuperpower.svg";
 import alahomoraUsed from "./images/alahomoraUsed.svg";
 import easyModUsed from "./images/easyModUsed.svg";
 export function Leaderbord() {
-  // const { isEasyMod } = useModContext();
-  // const { alahomoraMod } = useModContext();
   const [leaderList, setLeaderList] = useState([]);
-
-  // const imgSrc = achievements === 1 ? (achievements === 2 ? withoutEaseMod : withoutSuperpower) : "";
-
-  // const imgAlt = achievements === 1 ? "withoutEaseMod" : "";
 
   const formatDate = time => {
     let minutes = Math.floor(time / 60);
@@ -61,23 +55,17 @@ export function Leaderbord() {
                     <div className={styles.achievementsContain}>
                       <p className={styles.infoAboutLeader}>{value.name}</p>
                       <div className={styles.achievements}>
-                        {/* {!haveHardModAchiev ? (
-                          <img className={styles.image} src={withoutEasyMod} alt={"withoutEasyMod"} />
-                        ) : (
-                          <img className={styles.image} src={easyModUsed} alt={"easyModUsed"} />
-                        )}
-                        {!alahomoraMod ? (
-                          <img className={styles.image} src={withoutSuperpower} alt={"withoutSuperpower"} />
-                        ) : (
-                          <img className={styles.image} src={alahomoraUsed} alt={"alahomoraUsed"} />
-                        )} */}
                         {value.haveHardModAchiev ? (
-                          <img className={styles.image} src={withoutEasyMod} alt={"withoutEasyMod"} />
+                          <div className={styles.imageActive} data-title="Игра пройдена в сложном режиме">
+                            <img className={styles.imageActive} src={withoutEasyMod} alt={"withoutEasyMod"} />
+                          </div>
                         ) : (
                           <img className={styles.image} src={easyModUsed} alt={"easyModUsed"} />
                         )}
                         {value.haveSuperPowerAchiev ? (
-                          <img className={styles.image} src={withoutSuperpower} alt={"withoutSuperpower"} />
+                          <div className={styles.imageActive} data-title="Игра пройдена без супер-сил">
+                            <img className={styles.imageActive} src={withoutSuperpower} alt={"withoutSuperpower"} />
+                          </div>
                         ) : (
                           <img className={styles.image} src={alahomoraUsed} alt={"alahomoraUsed"} />
                         )}
