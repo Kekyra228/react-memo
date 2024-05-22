@@ -253,7 +253,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
                 >
                   <img className={styles.achievementEye} src={eye} alt="eye" />
                 </div>
-                <div className={styles.achievementHelpAlahomora} data-title="Открывается случайная пара карт">
+                <div className={styles.achievementHelpAlahomora} data-title="Алахамора Открывается случайная пара карт">
                   <button className={styles.click} onClick={useAlahomora}>
                     {!alahomoraMod ? (
                       <img className={styles.achievementAlahamora} src={alohomora} alt="alahamora" />
@@ -262,6 +262,12 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
                     )}
                   </button>
                 </div>
+                {/* <div className={styles.achievementTooltip}>
+                  <div className={styles.achievementTooltipContain}>
+                    <p className={styles.achievementTooltipName}>Алахамора</p>
+                    <p className={styles.achievementTooltipText}>Открывается случайная пара карт</p>
+                  </div>
+                </div> */}
               </div>
             </>
           )}

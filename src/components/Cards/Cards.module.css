@@ -92,8 +92,12 @@
   margin-left: 30px;
   display: flex;
 }
+.achievementHelpAlahomora {
+  position: relative;
+}
 
 .achievementHelpAlahomora:hover::after {
+  display: block;
   content: attr(data-title);
   z-index: 1;
   position: absolute;
@@ -102,23 +106,53 @@
   font-size: 18px;
   padding: 5px 10px;
   border-radius: 10px;
-}
-
-.achievementHelpEye:hover::after {
-  content: attr(data-title);
-  z-index: 1;
-  position: absolute;
-  background-color: rgb(194, 245, 255);
-  color: rgb(0, 73, 128);
-  font-size: 18px;
-  padding: 5px 10px;
-  border-radius: 10px;
-  width: auto;
-  height: auto;
   text-align: center;
   font-size: 18px;
+  width: auto;
+  height: auto;
+}
+
+.achievementHelpAlahomora:hover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -100;
+}
+.achievementHelpEye {
+  position: relative;
+}
+.achievementHelpEye:hover::after {
+  opacity: 1;
+  display: block;
+  content: attr(data-title);
+  z-index: 1;
+  position: absolute;
+  background-color: rgb(194, 245, 255);
+  color: rgb(0, 73, 128);
+  font-size: 18px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  text-align: center;
+  width: auto;
+  height: auto;
+}
+.achievementHelpEye:hover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -100;
 }
 .click {
+  margin-right: 15px;
+  margin-bottom: 10px;
   border-radius: 50%;
   background-color: rgb(194, 245, 255);
   border: none;
@@ -126,4 +160,31 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
+}
+
+.achievementTooltip {
+  border-radius: 12px;
+  width: auto;
+  height: 150px;
+  padding: 5px 10px;
+  background-color: rgb(194, 245, 255);
+  width: 150px;
+  height: 170px;
+}
+.achievementTooltipContain {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+}
+.achievementTooltipName {
+  font-weight: 700;
+  font-size: 18px;
+  color: rgb(0, 73, 128);
+}
+.achievementTooltipText {
+  font-weight: 400;
+  font-size: 18px;
+  color: rgb(0, 73, 128);
+  text-align: center;
 }

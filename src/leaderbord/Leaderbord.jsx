@@ -23,7 +23,7 @@ export function Leaderbord() {
         const haveSuperPowerAchiev = leader.achievements.includes(2);
         return { ...leader, haveHardModAchiev, haveSuperPowerAchiev };
       });
-      data.leaders.sort((a, b) => a.time - b.time);
+      leaderList.sort((a, b) => a.time - b.time);
       setLeaderList(leaderList);
     });
   }, []);
