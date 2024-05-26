@@ -10,7 +10,7 @@ import { LeaderboardModal } from "../../leaderbord/LeaderbordModal";
 // import eye from "../images/epiphane.svg";
 import eye from "../achievements/eye.svg";
 import alohomora from "../achievements/alohomora.svg";
-import usedAlahomora from "../achievements/usedAlahomora.svg";
+// import usedAlahomora from "../achievements/usedAlahomora.svg";
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
 const STATUS_WON = "STATUS_WON";
@@ -245,34 +245,33 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
                   <div>{timer.seconds.toString().padStart("2", "0")}</div>
                 </div>
               </div>
-              <div className={styles.achievementCont}>
-                <div
-                  className={styles.achievementHelpEye}
-                  data-title="На 5 секунд показываются все карты.
-                  Таймер длительности игры на это время останавливается"
-                >
-                  <img className={styles.achievementEye} src={eye} alt="eye" />
-                </div>
-                <div className={styles.achievementHelpAlahomora} data-title="Алахамора Открывается случайная пара карт">
-                  <button className={styles.click} onClick={useAlahomora}>
-                    {!alahomoraMod ? (
-                      <img className={styles.achievementAlahamora} src={alohomora} alt="alahamora" />
-                    ) : (
-                      <img className={styles.achievementAlahamora} src={usedAlahomora} alt="usedAlahomora" />
-                    )}
-                  </button>
-                </div>
-                {/* <div className={styles.achievementTooltip}>
-                  <div className={styles.achievementTooltipContain}>
-                    <p className={styles.achievementTooltipName}>Алахамора</p>
-                    <p className={styles.achievementTooltipText}>Открывается случайная пара карт</p>
-                  </div>
-                </div> */}
-              </div>
             </>
           )}
         </div>
-
+        {status === STATUS_IN_PROGRESS ? (
+          <div className={styles.powers}>
+            <div className={styles.blockProzrenie}>
+              <button className={styles.prozrenie}>
+                <img className={styles.achievementEye} src={eye} alt="eye" />
+              </button>
+              <div className={styles.popup}>
+                <span className={styles.popup_heading}>Прозрение</span>
+                <span className={styles.popup_info}>
+                  На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается.
+                </span>
+              </div>
+            </div>
+            <div className={styles.blockAlohomora}>
+              <button className={styles.alohomora} onClick={useAlahomora}>
+                <img className={styles.achievementAlahamora} src={alohomora} alt="alahamora" />
+              </button>
+              <div className={styles.popup}>
+                <span className={styles.popup_heading}>Алохомора</span>
+                <span className={styles.popup_info}>Открывается случайная пара карт.</span>
+              </div>
+            </div>
+          </div>
+        ) : null}
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
 

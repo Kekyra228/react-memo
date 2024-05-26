@@ -84,107 +84,98 @@
   }
 }
 
-.achievementEye {
-  margin-right: 15px;
-}
-
-.achievementCont {
-  margin-left: 30px;
+.powers {
   display: flex;
+  gap: 15px;
 }
-.achievementHelpAlahomora {
+
+.blockProzrenie,
+.blockAlohomora {
   position: relative;
 }
 
-.achievementHelpAlahomora:hover::after {
-  display: block;
-  content: attr(data-title);
-  z-index: 1;
-  position: absolute;
-  background-color: rgb(194, 245, 255);
-  color: rgb(0, 73, 128);
-  font-size: 18px;
-  padding: 5px 10px;
-  border-radius: 10px;
-  text-align: center;
-  font-size: 18px;
-  width: auto;
-  height: auto;
-}
-
-.achievementHelpAlahomora:hover::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: -100;
-}
-.achievementHelpEye {
+.blockAlohomora {
   position: relative;
-}
-.achievementHelpEye:hover::after {
-  opacity: 1;
-  display: block;
-  content: attr(data-title);
-  z-index: 1;
-  position: absolute;
-  background-color: rgb(194, 245, 255);
-  color: rgb(0, 73, 128);
-  font-size: 18px;
-  padding: 5px 10px;
-  border-radius: 10px;
-  text-align: center;
-  width: auto;
-  height: auto;
-}
-.achievementHelpEye:hover::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: -100;
-}
-.click {
-  margin-right: 15px;
-  margin-bottom: 10px;
   border-radius: 50%;
   background-color: rgb(194, 245, 255);
   border: none;
-  padding: 10px;
+  padding: 2.5px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
 }
 
-.achievementTooltip {
-  border-radius: 12px;
-  width: auto;
-  height: 150px;
-  padding: 5px 10px;
-  background-color: rgb(194, 245, 255);
-  width: 150px;
-  height: 170px;
+.prozrenie {
+  display: block;
+  width: 64px;
+  height: 64px;
+  background: transparent;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
 }
-.achievementTooltipContain {
-  display: flex;
+.prozrenie:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.5); /* fallback for IE */
+  box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5);
+}
+
+.alohomora {
+  border-radius: 50%;
+  position: relative;
+  display: block;
+  width: 64px;
+  height: 64px;
+  background: transparent;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+}
+
+.alohomora:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.5); /* fallback for IE */
+  box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5);
+}
+
+.popup {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  top: 80px;
+  left: -90px;
   flex-direction: column;
-  align-content: center;
   align-items: center;
-}
-.achievementTooltipName {
-  font-weight: 700;
+  gap: 15px;
+  width: 222px;
+  height: auto;
+  padding: 20px;
+  border-radius: 12px;
   font-size: 18px;
-  color: rgb(0, 73, 128);
+  line-height: 24px;
+  color: #004980;
+  background-color: #c2f5ff;
 }
-.achievementTooltipText {
-  font-weight: 400;
-  font-size: 18px;
-  color: rgb(0, 73, 128);
+
+.popup_heading {
   text-align: center;
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.popup_info {
+  display: block;
+  text-align: center;
+}
+
+.blockProzrenie:hover .popup {
+  display: block;
+}
+
+.blockAlohomora:hover .popup {
+  display: block;
 }
