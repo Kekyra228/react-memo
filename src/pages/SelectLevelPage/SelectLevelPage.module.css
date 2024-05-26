@@ -62,3 +62,18 @@
 .levelLink:visited {
   color: #0080c1;
 }
+
+.chooseEasyMod {
+  color: #0080c1;
+  text-align: center;
+  font-family: StratosSkyeng;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.linkToLeaderboard {
+  font-family: StratosSkyeng;
+  color: rgb(0, 73, 128);
+  margin-top: 18px;
+  font-size: 16px;
+}

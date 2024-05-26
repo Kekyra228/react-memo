@@ -5,7 +5,12 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
-
+import { useModContext } from "../context/useModContext";
+import { LeaderboardModal } from "../../leaderbord/LeaderbordModal";
+// import eye from "../images/epiphane.svg";
+import eye from "../achievements/eye.svg";
+import alohomora from "../achievements/alohomora.svg";
+// import usedAlahomora from "../achievements/usedAlahomora.svg";
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
 const STATUS_WON = "STATUS_WON";
@@ -13,6 +18,8 @@ const STATUS_WON = "STATUS_WON";
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 // Начало игры: игрок видит все карты в течении нескольких секунд
 const STATUS_PREVIEW = "STATUS_PREVIEW";
+
+const STATUS_LEADER = "STATUS_LEADER";
 
 function getTimerValue(startDate, endDate) {
   if (!startDate && !endDate) {
@@ -41,6 +48,8 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  const { alahomoraMod, setAlahomoraMod } = useModContext();
+  const { isEasyMod } = useModContext();
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -56,6 +65,11 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     seconds: 0,
     minutes: 0,
   });
+
+  const [lifes, setLifes] = useState(isEasyMod ? 3 : 1);
+  // const userTry = () => {
+  //   setLifes(lifes => lifes - 1);
+  // };
 
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
@@ -73,6 +87,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
+    setAlahomoraMod(false);
   }
 
   /**
@@ -92,7 +107,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       if (card.id !== clickedCard.id) {
         return card;
       }
-
       return {
         ...card,
         open: true,
@@ -104,7 +118,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     const isPlayerWon = nextCards.every(card => card.open);
 
     // Победа - все карты на поле открыты
-    if (isPlayerWon) {
+
+    if (isPlayerWon && !isEasyMod && pairsCount === 9) {
+      finishGame(STATUS_LEADER);
+    } else if (isPlayerWon) {
       finishGame(STATUS_WON);
       return;
     }
@@ -123,18 +140,52 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       return false;
     });
 
-    const playerLost = openCardsWithoutPair.length >= 2;
+    if (isEasyMod) {
+      if (openCardsWithoutPair.length >= 2) {
+        openCardsWithoutPair.forEach(wrongCard => {
+          const foundWrongCard = nextCards.find(card => card.id === wrongCard.id);
+          if (foundWrongCard) {
+            foundWrongCard.open = false;
+          }
+        });
 
-    // "Игрок проиграл", т.к на поле есть две открытые карты без пары
-    if (playerLost) {
-      finishGame(STATUS_LOST);
-      return;
+        setLifes(lifes => lifes - 1);
+        setCards([...nextCards]);
+      }
+      if (lifes === 0) {
+        finishGame(STATUS_LOST);
+        return;
+      }
+    } else {
+      // "Игрок проиграл", т.к на поле есть две открытые карты без пары
+      const playerLost = openCardsWithoutPair.length >= 2;
+      if (playerLost) {
+        finishGame(STATUS_LOST);
+        return;
+      }
     }
 
     // ... игра продолжается
   };
+  const useAlahomora = () => {
+    if (!alahomoraMod) {
+      console.log("алахомора сработала");
+      const notOpenCards = cards.filter(card => !card.open);
+      console.log(notOpenCards);
+      const randomCard = notOpenCards[Math.floor(Math.random() * notOpenCards.length)];
+      console.log(randomCard);
+      const randomPair = notOpenCards.filter(
+        notOpenCards => randomCard.suit === notOpenCards.suit && randomCard.rank === notOpenCards.rank,
+      );
+      console.log(randomPair);
+      randomPair[0].open = true;
+      randomPair[1].open = true;
+      setAlahomoraMod(true);
+    }
+  };
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
+  const isGameEndedLeader = status === STATUS_LEADER;
 
   // Игровой цикл
   useEffect(() => {
@@ -183,18 +234,44 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </div>
           ) : (
             <>
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>min</div>
-                <div>{timer.minutes.toString().padStart("2", "0")}</div>
-              </div>
-              .
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>sec</div>
-                <div>{timer.seconds.toString().padStart("2", "0")}</div>
+              <div className={styles.timer}>
+                <div className={styles.timerValue}>
+                  <div className={styles.timerDescription}>min</div>
+                  <div>{timer.minutes.toString().padStart("2", "0")}</div>
+                </div>
+                .
+                <div className={styles.timerValue}>
+                  <div className={styles.timerDescription}>sec</div>
+                  <div>{timer.seconds.toString().padStart("2", "0")}</div>
+                </div>
               </div>
             </>
           )}
         </div>
+        {status === STATUS_IN_PROGRESS ? (
+          <div className={styles.powers}>
+            <div className={styles.blockProzrenie}>
+              <button className={styles.prozrenie}>
+                <img className={styles.achievementEye} src={eye} alt="eye" />
+              </button>
+              <div className={styles.popup}>
+                <span className={styles.popup_heading}>Прозрение</span>
+                <span className={styles.popup_info}>
+                  На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается.
+                </span>
+              </div>
+            </div>
+            <div className={styles.blockAlohomora}>
+              <button className={styles.alohomora} onClick={useAlahomora}>
+                <img className={styles.achievementAlahamora} src={alohomora} alt="alahamora" />
+              </button>
+              <div className={styles.popup}>
+                <span className={styles.popup_heading}>Алохомора</span>
+                <span className={styles.popup_info}>Открывается случайная пара карт.</span>
+              </div>
+            </div>
+          </div>
+        ) : null}
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
 
@@ -210,10 +287,26 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         ))}
       </div>
 
+      <div>
+        <div>
+          <p className={styles.lifesCont}>Жизней: {lifes}</p>
+        </div>
+      </div>
+
       {isGameEnded ? (
         <div className={styles.modalContainer}>
           <EndGameModal
             isWon={status === STATUS_WON}
+            gameDurationSeconds={timer.seconds}
+            gameDurationMinutes={timer.minutes}
+            onClick={resetGame}
+          />
+        </div>
+      ) : null}
+      {isGameEndedLeader ? (
+        <div className={styles.modalContainer}>
+          <LeaderboardModal
+            isLeader={status === STATUS_LEADER}
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}
